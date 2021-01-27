@@ -21,6 +21,12 @@ description:         Please see the README on GitHub at <https://github.com/bren
 
 dependencies:
 - base >= 4.7 && < 5
+- bytestring
+- text
+- xeno
+- pretty-simple
+- uniplate
+- containers
 
 library:
   source-dirs: src
