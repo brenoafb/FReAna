@@ -176,18 +176,6 @@ sdFromNode node = do
             _          -> Left "Invalid component in SequenceDiagram"
 
 
--- adFromNode :: Node -> Either Error ActivityDiagram
--- adFromNode node
---   | name node /= "ActivityDiagram" = Left "Invalid Node (not \"ActivityDiagram\")"
---   | otherwise = do
---       elementsNode <- node `childNamed` "Elements"
---       adElements <-  mapM adElementFromNode (elementsNode `childrenNamed` "ActivityDiagramElement")
---       transitionsNode <- node `childNamed` "Transitions"
---       adTransitions <- mapM adTransitionFromNode (transitionsNode `childrenNamed` "Transition")
---       pure ActivityDiagram { adElements    = adElements
---                            , adTransitions = adTransitions
---                            }
-
 -- | Read a Message from a respective node.
 -- ```xml
 -- <Message name="" probability="0.999" source="Mock lifeline" target="Lifeline_0" type="asynchronous" />
