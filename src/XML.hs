@@ -12,8 +12,12 @@ import qualified Data.Map as M
 
 type Error = BS.ByteString
 
+
 node `childrenNamed` cname =
   filter (\n -> name n == cname) $ children node
+
+node `childrenNamedElem` cnames =
+  filter (\n -> name n `elem` cnames) $ children node
 
 node `childNamed` cname =
   case node `childrenNamed` cname of
@@ -158,13 +162,19 @@ sdFromNode :: Node -> Either Error SequenceDiagram
 sdFromNode node = do
   sdName      <- nodeLookup node "name"
   sdGuard     <- nodeLookup node "guard"
-  sdMessages  <- mapM messageFromNode $ node `childrenNamed` "Message"
-  sdFragments <- mapM fragmentFromNode $ node `childrenNamed` "Fragments"
-  pure SequenceDiagram { sdName      = sdName
-                       , sdGuard     = sdGuard
-                       , sdMessages  = sdMessages
-                       , sdFragments = sdFragments
+  let sdCompNodes = node `childrenNamedElem` ["Message", "Fragment"]
+  sdComps     <- mapM compFromNode sdCompNodes
+  pure SequenceDiagram { sdName        = sdName
+                       , sdGuard       = sdGuard
+                       , sdComponents  = sdComps
                        }
+  where compFromNode :: Node -> Either Error (Either Message Fragment)
+        compFromNode node =
+          case name node of
+            "Message"  -> Left <$>  messageFromNode node
+            "Fragment" -> Right <$> fragmentFromNode node
+            _          -> Left "Invalid component in SequenceDiagram"
+
 
 -- adFromNode :: Node -> Either Error ActivityDiagram
 -- adFromNode node

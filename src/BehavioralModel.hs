@@ -40,8 +40,7 @@ data SequenceDiagrams =
 data SequenceDiagram =
   SequenceDiagram { sdName       :: BS.ByteString
                   , sdGuard      :: BS.ByteString  -- presence condition
-                  , sdMessages   :: [Message]
-                  , sdFragments  :: [Fragment]
+                  , sdComponents :: [Either Message Fragment]
                   } deriving (Eq, Show, Data, Typeable)
 
 data Message =
