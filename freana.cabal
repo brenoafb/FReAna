@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e318285e759d67373382a0b968afbe0b355b185850c2522ba3d310d0b5017c6d
+-- hash: 2ad13f7279145a3f8d9bcd598846bcca17ae6519909d8601fbef202229389bc1
 
 name:           freana
 version:        0.1.0.0
@@ -27,7 +27,9 @@ source-repository head
 
 library
   exposed-modules:
+      BehavioralModel
       Lib
+      XML
   other-modules:
       Paths_freana
   hs-source-dirs:

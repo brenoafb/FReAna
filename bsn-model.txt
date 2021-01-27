@@ -1,0 +1,791 @@
+Model
+    { mName = "translatedBSN"
+    , mActivityDiagram = ActivityDiagram
+        { adElements =
+            [ ActivityDiagramElement
+                { adElementName = "Start node"
+                , adElementType = "StartNode"
+                , adElementRepBy = Nothing
+                }
+            , ActivityDiagramElement
+                { adElementName = "Capture"
+                , adElementType = "Activity"
+                , adElementRepBy = Just "Capture"
+                }
+            , ActivityDiagramElement
+                { adElementName = "End node"
+                , adElementType = "EndNode"
+                , adElementRepBy = Nothing
+                }
+            , ActivityDiagramElement
+                { adElementName = "Reconfiguration"
+                , adElementType = "Activity"
+                , adElementRepBy = Just "Reconfiguration"
+                }
+            , ActivityDiagramElement
+                { adElementName = "DecisionNode_0"
+                , adElementType = "DecisionNode"
+                , adElementRepBy = Nothing
+                }
+            , ActivityDiagramElement
+                { adElementName = "QoSChange"
+                , adElementType = "Activity"
+                , adElementRepBy = Just "QoSChange"
+                }
+            , ActivityDiagramElement
+                { adElementName = "Situation"
+                , adElementType = "Activity"
+                , adElementRepBy = Just "Situation"
+                }
+            ]
+        , adTransitions =
+            [ Transition
+                { transitionName = "Capture"
+                , transitionProbability = 1.0
+                , transitionSource = "Start node"
+                , transitionTarget = "Capture"
+                }
+            , Transition
+                { transitionName = ""
+                , transitionProbability = 1.0
+                , transitionSource = "Reconfiguration"
+                , transitionTarget = "End node"
+                }
+            , Transition
+                { transitionName = ""
+                , transitionProbability = 0.5
+                , transitionSource = "DecisionNode_0"
+                , transitionTarget = "Reconfiguration"
+                }
+            , Transition
+                { transitionName = ""
+                , transitionProbability = 0.5
+                , transitionSource = "DecisionNode_0"
+                , transitionTarget = "End node"
+                }
+            , Transition
+                { transitionName = ""
+                , transitionProbability = 1.0
+                , transitionSource = "QoSChange"
+                , transitionTarget = "DecisionNode_0"
+                }
+            , Transition
+                { transitionName = ""
+                , transitionProbability = 1.0
+                , transitionSource = "Situation"
+                , transitionTarget = "QoSChange"
+                }
+            , Transition
+                { transitionName = ""
+                , transitionProbability = 1.0
+                , transitionSource = "Capture"
+                , transitionTarget = "Situation"
+                }
+            ]
+        }
+    , mSequenceDiagrams = SequenceDiagrams
+        { sdsSequenceDiagrams =
+            [ SequenceDiagram
+                { sdName = "QoSChange"
+                , sdGuard = "true"
+                , sdMessages =
+                    [ Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "getQoSRequired"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "returnQoSRequired"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "notifyChange"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replyNotify"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "n6"
+                , sdGuard = "Memory"
+                , sdMessages =
+                    [ Message
+                        { messageName = "persist"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "persistReply"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "n3"
+                , sdGuard = "ACC"
+                , sdMessages =
+                    [ Message
+                        { messageName = "sendPacket"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "sendSituation(packetSituation)"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replySituation"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "n7"
+                , sdGuard = "Oxygenation"
+                , sdMessages =
+                    [ Message
+                        { messageName = "register"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replyRegister"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "persist"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "persistReply"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "replySendSituation(Oxygenation)"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replySendSituation"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "Situation"
+                , sdGuard = "true"
+                , sdMessages = []
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "n10"
+                , sdGuard = "Position"
+                , sdMessages =
+                    [ Message
+                        { messageName = "register"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replyRegister"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "persist"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "persistReply"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "replySendSituation(Position)"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replySendSituation"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "Reconfiguration"
+                , sdGuard = "true"
+                , sdMessages =
+                    [ Message
+                        { messageName = "getQoSRequired"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replyQoSRequired"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "searchNewConfig"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replyNewConfig"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "calculateQoS"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replyQoS"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "configure"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replyConfigure"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "n4"
+                , sdGuard = "Fall"
+                , sdMessages =
+                    [ Message
+                        { messageName = "register"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replyRegister"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "persist"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "persistReply"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "replySendSituation(Fall)"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replySendSituation"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "n0"
+                , sdGuard = "ECG"
+                , sdMessages =
+                    [ Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "sendSituation(packetSituation)"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replySituation"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "n2"
+                , sdGuard = "TEMP"
+                , sdMessages =
+                    [ Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "sendSituation(packetSituation)"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replySituation"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "n1"
+                , sdGuard = "SPO2"
+                , sdMessages =
+                    [ Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "sendSituation(packetSituation)"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replySituation"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "n13"
+                , sdGuard = "PulseRate"
+                , sdMessages =
+                    [ Message
+                        { messageName = "register"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replyRegister"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "persist"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "persistReply"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "replySendSituation(PulseRate)"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replySendSituation"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "n16"
+                , sdGuard = "Temperature"
+                , sdMessages =
+                    [ Message
+                        { messageName = "register"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replyRegister"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "persist"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "persistReply"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    , Message
+                        { messageName = "replySendSituation(Temperature)"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "replySendSituation"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "n5"
+                , sdGuard = "SQLite"
+                , sdMessages =
+                    [ Message
+                        { messageName = "persist"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    , Message
+                        { messageName = "persistReply"
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Synchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            , SequenceDiagram
+                { sdName = "Capture"
+                , sdGuard = "true"
+                , sdMessages = []
+                , sdFragments = []
+                }
+            ]
+        , sdsLifelines =
+            [ Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            , Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            , Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            , Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            , Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            , Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            , Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            , Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            , Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            , Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            , Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            , Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            , Lifeline
+                { lifelineName = "Lifeline_0"
+                , lifelineReliability = 0.999
+                }
+            , Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            ]
+        , sdsFragments =
+            [ Fragment
+                { fragmentName = "n6"
+                , fragmentType = Optional
+                , fragmentRepBy = Just "n6"
+                }
+            , Fragment
+                { fragmentName = "n13"
+                , fragmentType = Optional
+                , fragmentRepBy = Just "n13"
+                }
+            , Fragment
+                { fragmentName = "n3"
+                , fragmentType = Optional
+                , fragmentRepBy = Just "n3"
+                }
+            , Fragment
+                { fragmentName = "n16"
+                , fragmentType = Optional
+                , fragmentRepBy = Just "n16"
+                }
+            , Fragment
+                { fragmentName = "n0"
+                , fragmentType = Optional
+                , fragmentRepBy = Just "n0"
+                }
+            , Fragment
+                { fragmentName = "n2"
+                , fragmentType = Optional
+                , fragmentRepBy = Just "n2"
+                }
+            , Fragment
+                { fragmentName = "n7"
+                , fragmentType = Optional
+                , fragmentRepBy = Just "n7"
+                }
+            , Fragment
+                { fragmentName = "n10"
+                , fragmentType = Optional
+                , fragmentRepBy = Just "n10"
+                }
+            , Fragment
+                { fragmentName = "n5"
+                , fragmentType = Optional
+                , fragmentRepBy = Just "n5"
+                }
+            , Fragment
+                { fragmentName = "n4"
+                , fragmentType = Optional
+                , fragmentRepBy = Just "n4"
+                }
+            , Fragment
+                { fragmentName = "n1"
+                , fragmentType = Optional
+                , fragmentRepBy = Just "n1"
+                }
+            ]
+        }
+    }

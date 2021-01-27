@@ -1,0 +1,56 @@
+Model
+    { mName = "translatedBSN"
+    , mActivityDiagram = ActivityDiagram
+        { adElements =
+            [ ActivityDiagramElement
+                { adElementName = "Start node"
+                , adElementType = "StartNode"
+                , adElementRepBy = Nothing
+                }
+            , ActivityDiagramElement
+                { adElementName = "Capture"
+                , adElementType = "Activity"
+                , adElementRepBy = Just "Capture"
+                }
+            ]
+        , adTransitions =
+            [ Transition
+                { transitionName = "Capture"
+                , transitionProbability = 1.0
+                , transitionSource = "Start node"
+                , transitionTarget = "Capture"
+                }
+            ]
+        }
+    , mSequenceDiagrams = SequenceDiagrams
+        { sdsSequenceDiagrams =
+            [ SequenceDiagram
+                { sdName = "QoSChange"
+                , sdGuard = "true"
+                , sdMessages =
+                    [ Message
+                        { messageName = ""
+                        , messageProbability = 0.999
+                        , messageSource = "Mock lifeline"
+                        , messageTarget = "Lifeline_0"
+                        , messageType = Asynchronous
+                        }
+                    ]
+                , sdFragments = []
+                }
+            ]
+        , sdsLifelines =
+            [ Lifeline
+                { lifelineName = "Mock lifeline"
+                , lifelineReliability = 0.999
+                }
+            ]
+        , sdsFragments =
+            [ Fragment
+                { fragmentName = "n6"
+                , fragmentType = Optional
+                , fragmentRepBy = Just "n6"
+                }
+            ]
+        }
+    }
