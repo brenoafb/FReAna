@@ -19,20 +19,19 @@ filename = "bsn-reduced.xml"
 main :: IO ()
 main = do
   xmlText <- BS.readFile filename
-  let processParams =
-        Process { openF    = \t   -> BS.putStrLn $ "openF: "    <> t
-                , attrF    = \t r -> BS.putStrLn $ "attrF: "    <> t <> ", " <> r
-                , endOpenF = \t   -> BS.putStrLn $ "endOpenF: " <> t
-                , textF    = \t   -> BS.putStrLn $ "textF: "    <> t
-                , closeF   = \t   -> BS.putStrLn $ "closeF: "   <> t
-                , cdataF   = \t   -> BS.putStrLn $ "cdataF: "   <> t
-                }
-  process processParams xmlText
   case parse xmlText of
     Left err -> print err
-    Right node -> return ()
+    Right node ->
+      case modelFromNode node of
+        Left err -> print err
+        Right model -> print model
 
 type Error = BS.ByteString
+
+parseFile :: FilePath -> IO (Either XenoException Node)
+parseFile f = do
+  xml <- BS.readFile f
+  pure $ parse xml
 
 node `childrenNamed` cname =
   filter (\n -> name n == cname) $ children node
@@ -156,7 +155,19 @@ adTransitionFromNode node = do
 -- </SequenceDiagrams>
 -- ```
 sdsFromNode :: Node -> Either Error SequenceDiagrams
-sdsFromNode = undefined
+sdsFromNode node = do
+  sdsSequenceDiagrams <- mapM sdFromNode
+                              (node `childrenNamed` "SequenceDiagram")
+  lifelinesNode       <- node `childNamed` "Lifelines"
+  sdsLifelines        <- mapM lifelineFromNode
+                              (lifelinesNode `childrenNamed` "Lifeline")
+  fragmentsNode       <- node `childNamed` "Fragments"
+  sdsFragments        <- mapM fragmentFromNode
+                              (fragmentsNode `childrenNamed` "Fragment")
+  pure SequenceDiagrams { sdsSequenceDiagrams = sdsSequenceDiagrams
+                        , sdsLifelines        = sdsLifelines
+                        , sdsFragments        = sdsFragments
+                        }
 
 -- | Read a SequenceDiagram from a respective node.
 -- ```xml
@@ -248,11 +259,6 @@ fragmentFromNode node = do
         readType "optional" = pure Optional
         readType s           = Left $ "Invalid Fragment type " <> s
 
-parseFile :: FilePath -> IO (Either XenoException Node)
-parseFile f = do
-  xml <- BS.readFile f
-  pure $ parse xml
-
 data Model =
   Model { mName             :: BS.ByteString
         , mActivityDiagram  :: ActivityDiagram
@@ -279,9 +285,9 @@ data Transition =
              } deriving (Eq, Show)
 
 data SequenceDiagrams =
-  SequenceDiagrams { sdSequenceDiagrams :: [SequenceDiagram]
-                   , sdLifelines        :: [Lifeline]
-                   , sdsFragments       :: [Fragment]
+  SequenceDiagrams { sdsSequenceDiagrams :: [SequenceDiagram]
+                   , sdsLifelines        :: [Lifeline]
+                   , sdsFragments        :: [Fragment]
                    } deriving (Eq, Show)
 
 data SequenceDiagram =
