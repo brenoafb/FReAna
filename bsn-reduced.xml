@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SplBehavioralModel name="translatedBSN">
+
+  <ActivityDiagram name="AD_SPL_0">
+    <Elements>
+      <ActivityDiagramElement name="Start node" type="StartNode" />
+      <ActivityDiagramElement name="Capture" type="Activity">
+        <RepresentedBy seqDiagName="Capture" />
+      </ActivityDiagramElement>
+    </Elements>
+    <Transitions>
+      <Transition name="Capture" probability="1.0" source="Start node" target="Capture" />
+    </Transitions>
+  </ActivityDiagram>
+
+  <SequenceDiagrams>
+    <SequenceDiagram guard="true" name="QoSChange">
+      <Message name="" probability="0.999" source="Mock lifeline" target="Lifeline_0" type="asynchronous" />
+    </SequenceDiagram>
+    <Lifelines>
+      <Lifeline name="Mock lifeline" reliability="0.999" />
+    </Lifelines>
+    <Fragments>
+      <Fragment name="n6" type="optional">
+        <RepresentedBy seqDiagName="n6" />
+      </Fragment>
+    </Fragments>
+  </SequenceDiagrams>
+
+</SplBehavioralModel>

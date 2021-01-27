@@ -7,6 +7,8 @@ import Xeno.SAX
 import Xeno.Types
 import Text.Pretty.Simple (pPrint)
 import Data.Text.Encoding (encodeUtf8, decodeUtf8)
+import Text.Read (readMaybe)
+import qualified Data.ByteString.Char8 as C
 import qualified Data.ByteString as BS
 import qualified Data.Map as M
 import qualified Data.Text as T
@@ -122,17 +124,19 @@ adElementFromNode node = do
 -- <Transition name="Capture" probability="1.0" source="Start node" target="Capture" />
 -- ```
 adTransitionFromNode :: Node -> Either Error Transition
-adTransitionFromNode = undefined
+adTransitionFromNode node = do
+  tName <- nodeLookup node "name"
+  tProb <- nodeLookup node "probability" >>= read'
+  tSrc  <- nodeLookup node "source"
+  tTrgt <- nodeLookup node "target"
+  pure $ Transition { transitionName = tName
+                    , transitionProbability = tProb
+                    , transitionSource = tSrc
+                    , transitionTarget = tTrgt
+                    }
 
 -- | Read a SequenceDiagrams object from a respective node
 -- Example XML node containing a SequenceDiagrams object
--- ```xml
--- <Transition name="Capture" probability="1.0" source="Start node" target="Capture" />
--- ```
-sdsFromNode :: Node -> Either Error SequenceDiagrams
-sdsFromNode = undefined
-
--- | Read a SequenceDiagram from a respective node.
 -- A SequenceDiagrams object contains a collection of
 -- SequenceDiagrams, Lifelines, and Fragments.
 -- Example XML node containing a SequenceDiagram
@@ -151,8 +155,60 @@ sdsFromNode = undefined
 --   </Fragments>
 -- </SequenceDiagrams>
 -- ```
+sdsFromNode :: Node -> Either Error SequenceDiagrams
+sdsFromNode = undefined
+
+-- | Read a SequenceDiagram from a respective node.
+-- ```xml
+-- <SequenceDiagram guard="true" name="QoSChange">
+--   <Message name="" probability="0.999" source="Mock lifeline" target="Lifeline_0" type="asynchronous" />
+-- </SequenceDiagram>
+-- ```
 sdFromNode :: Node -> Either Error SequenceDiagram
-sdFromNode = undefined
+sdFromNode node = do
+  sdName      <- nodeLookup node "name"
+  sdGuard     <- nodeLookup node "guard"
+  sdMessages  <- mapM messageFromNode $ node `childrenNamed` "Message"
+  sdFragments <- mapM fragmentFromNode $ node `childrenNamed` "Fragments"
+  pure SequenceDiagram { sdName      = sdName
+                       , sdGuard     = sdGuard
+                       , sdMessages  = sdMessages
+                       , sdFragments = sdFragments
+                       }
+
+-- adFromNode :: Node -> Either Error ActivityDiagram
+-- adFromNode node
+--   | name node /= "ActivityDiagram" = Left "Invalid Node (not \"ActivityDiagram\")"
+--   | otherwise = do
+--       elementsNode <- node `childNamed` "Elements"
+--       adElements <-  mapM adElementFromNode (elementsNode `childrenNamed` "ActivityDiagramElement")
+--       transitionsNode <- node `childNamed` "Transitions"
+--       adTransitions <- mapM adTransitionFromNode (transitionsNode `childrenNamed` "Transition")
+--       pure ActivityDiagram { adElements    = adElements
+--                            , adTransitions = adTransitions
+--                            }
+
+-- | Read a Message from a respective node.
+-- ```xml
+-- <Message name="" probability="0.999" source="Mock lifeline" target="Lifeline_0" type="asynchronous" />
+-- ```
+messageFromNode :: Node -> Either Error Message
+messageFromNode node = do
+  mName <- nodeLookup node "name"
+  mProb <- nodeLookup node "probability" >>= read'
+  mSrc  <- nodeLookup node "source"
+  mTrgt <- nodeLookup node "target"
+  mType <- nodeLookup node "type" >>= readMessageType
+  pure  Message { messageName        = mName
+                , messageProbability = mProb
+                , messageSource      = mSrc
+                , messageTarget      = mTrgt
+                , messageType        = mType
+                }
+  where readMessageType :: BS.ByteString -> Either Error MessageType
+        readMessageType "synchronous"  = pure Synchronous
+        readMessageType "asynchronous" = pure Asynchronous
+        readMessageType s              = Left $ "Invalid message type: " <> s
 
 -- | Read a Lifeline from a respective node
 -- Example XML node containing a Lifeline
@@ -160,7 +216,13 @@ sdFromNode = undefined
 -- <Lifeline name="Mock lifeline" reliability="0.999" />
 -- ```
 lifelineFromNode :: Node -> Either Error Lifeline
-lifelineFromNode = undefined
+lifelineFromNode node = do
+  lName <- nodeLookup node "name"
+  lRel  <- nodeLookup node "reliability" >>= read'
+  pure $ Lifeline { lifelineName        = lName
+                  , lifelineReliability = lRel
+                  }
+
 
 -- | Read a Fragment from a respective node
 -- Example XML node containing a Fragment
@@ -170,7 +232,21 @@ lifelineFromNode = undefined
 -- </Fragment>
 -- ```
 fragmentFromNode :: Node -> Either Error Fragment
-fragmentFromNode = undefined
+fragmentFromNode node = do
+  fName <- nodeLookup node "name"
+  fType <- nodeLookup node "type" >>= readType
+  case children node of
+    [x] | name x == "RepresentedBy" -> do
+      repBy <- nodeLookup x "seqDiagName"
+      pure $ Fragment { fragmentName = fName
+                      , fragmentType = fType
+                      , fragmentRepBy = Just repBy
+                      }
+    _   -> Left "Invalid Fragment node"
+
+  where readType :: BS.ByteString -> Either Error FragmentType
+        readType "optional" = pure Optional
+        readType s           = Left $ "Invalid Fragment type " <> s
 
 parseFile :: FilePath -> IO (Either XenoException Node)
 parseFile f = do
@@ -205,13 +281,14 @@ data Transition =
 data SequenceDiagrams =
   SequenceDiagrams { sdSequenceDiagrams :: [SequenceDiagram]
                    , sdLifelines        :: [Lifeline]
-                   , sdFragments        :: [Fragment]
+                   , sdsFragments       :: [Fragment]
                    } deriving (Eq, Show)
 
 data SequenceDiagram =
   SequenceDiagram { sdName       :: BS.ByteString
                   , sdGuard      :: BS.ByteString  -- presence condition
-                  , sdComponents :: [Either Message Fragment]
+                  , sdMessages   :: [Message]
+                  , sdFragments  :: [Fragment]
                   } deriving (Eq, Show)
 
 data Message =
@@ -238,3 +315,9 @@ data Fragment =
 
 data FragmentType = Optional
   deriving (Eq, Show)
+
+read' :: Read a => BS.ByteString -> Either Error a
+read' s =
+  case readMaybe $ C.unpack s of
+    Nothing -> Left $ "Cannot parse value: " <> s
+    Just x  -> pure x
