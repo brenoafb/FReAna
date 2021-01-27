@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SplBehavioralModel name="ExampleModel">
+  <ActivityDiagram name="AD">
+    <Elements>
+      <ActivityDiagramElement name="Start node" type="StartNode" />
+      <ActivityDiagramElement name="Activity 1" type="Activity" >
+        <RepresentedBy seqDiagName="SD" />
+      </ActivityDiagramElement>
+      <ActivityDiagramElement name="End node" type="EndNode" />
+    </Elements>
+    <Transitions>
+      <Transition name="Start" probability="1.0" source="Start node" target="Activity 1" />
+      <Transition name="End"   probability="1.0" source="Activity 1" target="End node" />
+    </Transitions>
+  </ActivityDiagram>
+
+  <SequenceDiagrams>
+    <SequenceDiagram guard="true" name="SD">
+      <Message name="m1"       probability="0.999" source="C1" target="C3" type="synchronous"/>
+      <Message name="m2"       probability="0.999" source="C3" target="C4" type="synchronous"/>
+      <Message name="m2_reply" probability="0.999" source="C4" target="C3" type="synchronous"/>
+
+      <Fragment name="frag_1" type="optional">
+        <RepresentedBy seqDiagName="sd_frag_1" />
+      </Fragment>
+
+      <Message name="m1_reply" probability="0.999" source="C1" target="C3" type="synchronous"/>
+
+      <Fragment name="frag_2" type="optional">
+        <RepresentedBy seqDiagName="sd_frag_2" />
+      </Fragment>
+
+      <Fragment name="frag_3" type="optional">
+        <RepresentedBy seqDiagName="sd_frag_3" />
+      </Fragment>
+
+      <Fragment name="frag_4" type="optional">
+        <RepresentedBy seqDiagName="sd_frag_4" />
+      </Fragment>
+
+      <Message name="m9"       probability="0.999" source="C3" target="C4" type="synchronous"/>
+      <Message name="m9_reply" probability="0.999" source="C4" target="C3" type="synchronous"/>
+
+      <Fragment name="frag_5" type="optional">
+        <RepresentedBy seqDiagName="sd_frag_5" />
+      </Fragment>
+
+    </SequenceDiagram>
+
+    <SequenceDiagram guard="A" name="sd_frag_1">
+      <Message name="m3"       probability="0.999" source="C3" target="C2" type="synchronous" />
+      <Message name="m3_reply" probability="0.999" source="C2" target="C3" type="synchronous" />
+    </SequenceDiagram>
+
+    <SequenceDiagram guard="B" name="sd_frag_2">
+      <Message name="m4"       probability="0.999" source="C3" target="C4" type="synchronous" />
+      <Message name="m4_reply" probability="0.999" source="C4" target="C3" type="synchronous" />
+      <Message name="m5"       probability="0.999" source="C3" target="C2" type="synchronous" />
+      <Message name="m5_reply" probability="0.999" source="C2" target="C3" type="synchronous" />
+    </SequenceDiagram>
+
+    <SequenceDiagram guard="C" name="sd_frag_3">
+      <Message name="m6"       probability="0.999" source="C2" target="C1" type="synchronous" />
+      <Message name="m7"       probability="0.999" source="C1" target="C1" type="synchronous" />
+      <Message name="m6_reply" probability="0.999" source="C1" target="C2" type="synchronous" />
+    </SequenceDiagram>
+
+    <SequenceDiagram guard="A AND C" name="sd_frag_4">
+      <Message name="m8"       probability="0.999" source="C1" target="C2" type="synchronous" />
+    </SequenceDiagram>
+
+    <SequenceDiagram guard="D" name="sd_frag_5">
+      <Message name="m10"       probability="0.999" source="C4" target="C3" type="synchronous" />
+      <Message name="m10_reply" probability="0.999" source="C3" target="C4" type="synchronous" />
+      <Fragment name="frag_1" type="optional">
+        <RepresentedBy seqDiagName="sd_frag_1" />
+      </Fragment>
+    </SequenceDiagram>
+
+    <Lifelines>
+      <Lifeline name="C1" reliability="1.0" />
+      <Lifeline name="C2" reliability="1.0" />
+      <Lifeline name="C3" reliability="1.0" />
+      <Lifeline name="C4" reliability="1.0" />
+    </Lifelines>
+
+    <Fragments>
+      <Fragment name="frag_1" type="optional">
+        <RepresentedBy seqDiagName="sd_frag_1" />
+      </Fragment>
+      <Fragment name="frag_2" type="optional">
+        <RepresentedBy seqDiagName="sd_frag_2" />
+      </Fragment>
+      <Fragment name="frag_3" type="optional">
+        <RepresentedBy seqDiagName="sd_frag_3" />
+      </Fragment>
+      <Fragment name="frag_4" type="optional">
+        <RepresentedBy seqDiagName="sd_frag_4" />
+      </Fragment>
+      <Fragment name="frag_5" type="optional">
+        <RepresentedBy seqDiagName="sd_frag_5" />
+      </Fragment>
+    </Fragments>
+  </SequenceDiagrams>
+
+</SplBehavioralModel>
