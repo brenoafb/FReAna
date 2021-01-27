@@ -17,10 +17,11 @@ To build the project.
 $ stack build
 ```
 
+The current tool reads an XML model file and pretty print the model read.
+
 ```sh
 $ stack run <XML model file>
 ```
-This will read the XML model file and pretty print the model read.
 
 ## Model Files
 
