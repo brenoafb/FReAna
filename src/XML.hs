@@ -211,7 +211,6 @@ lifelineFromNode node = do
                   , lifelineReliability = lRel
                   }
 
-
 -- | Read a Fragment from a respective node
 -- Example XML node containing a Fragment
 -- ```xml
