@@ -32,16 +32,27 @@ one for each "feature"
 Here is an example
 
 <details>
+
+<summary><strong>Activity Diagram</strong></summary>
+
 ![Activity Diagram](assets/activity_diagram.png)
+
 </details>
 
 <details>
+
+<summary><strong>Sequence Diagram</strong></summary>
+
 ![Sequence Diagram](assets/sequence_diagram.png)
+
 </details>
 
 And the corresponding XML file.
 
 <details>
+
+<summary><strong>Behavioral Model XML</strong></summary>
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <SplBehavioralModel name="ExampleModel">
@@ -150,11 +161,15 @@ And the corresponding XML file.
 
 </SplBehavioralModel>
 ```
+
 </details>
 
 For this file, the program produces the following output.
 
 <details>
+
+<summary><strong>Behavioral Model Data</strong></summary>
+
 ```
 Model
     { mName = "ExampleModel"
@@ -482,4 +497,5 @@ Model
         }
     }
 ```
+
 </details>
