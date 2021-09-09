@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2ad13f7279145a3f8d9bcd598846bcca17ae6519909d8601fbef202229389bc1
+-- hash: bcd6c9507deaebc102ae70995b33f004aecb935e74a5775862c3a1a9237ebc9b
 
 name:           freana
 version:        0.1.0.0
@@ -38,7 +38,9 @@ library
       base >=4.7 && <5
     , bytestring
     , containers
+    , mtl
     , pretty-simple
+    , syb
     , text
     , uniplate
     , xeno
@@ -56,7 +58,9 @@ executable freana-exe
     , bytestring
     , containers
     , freana
+    , mtl
     , pretty-simple
+    , syb
     , text
     , uniplate
     , xeno
@@ -75,7 +79,9 @@ test-suite freana-test
     , bytestring
     , containers
     , freana
+    , mtl
     , pretty-simple
+    , syb
     , text
     , uniplate
     , xeno

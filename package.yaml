@@ -27,6 +27,8 @@ dependencies:
 - pretty-simple
 - uniplate
 - containers
+- syb
+- mtl
 
 library:
   source-dirs: src
