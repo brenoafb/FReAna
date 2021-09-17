@@ -6,7 +6,13 @@ import Data.Data
 import Data.Generics.Uniplate.Data
 import qualified Data.ByteString as BS
 
+type Ident = BS.ByteString
 type PCFormula = BS.ByteString
+type ModelName = BS.ByteString
+type MessageName = BS.ByteString
+type FragmentName = BS.ByteString
+type FeatureName = BS.ByteString
+type SDName = BS.ByteString
 
 data Model =
   Model { mName             :: BS.ByteString
@@ -40,13 +46,13 @@ data SequenceDiagrams =
                    } deriving (Eq, Ord, Show, Data, Typeable)
 
 data SequenceDiagram =
-  SequenceDiagram { sdName       :: BS.ByteString
+  SequenceDiagram { sdName       :: SDName
                   , sdGuard      :: PCFormula     -- presence condition
                   , sdComponents :: [Either Message Fragment]
                   } deriving (Eq, Ord, Show, Data, Typeable)
 
 data Message =
-  Message { messageName        :: BS.ByteString
+  Message { messageName        :: MessageName
           , messageProbability :: Double
           , messageSource      :: BS.ByteString       -- lifeline
           , messageTarget      :: BS.ByteString       -- lifeline
@@ -62,7 +68,7 @@ data Lifeline =
            } deriving (Eq, Ord, Show, Data, Typeable)
 
 data Fragment =
-  Fragment { fragmentName :: BS.ByteString
+  Fragment { fragmentName :: FragmentName
            , fragmentType :: FragmentType
            , fragmentRepBy :: Maybe BS.ByteString  -- seqDiagName
            } deriving (Eq, Ord, Show, Data, Typeable)
